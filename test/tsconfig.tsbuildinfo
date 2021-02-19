@@ -227,7 +227,7 @@
         "affectsGlobalScope": false
       },
       "./testtochinesenumerals.ts": {
-        "version": "249dee64240f4e30d1a9968d5a0203fc32b411a1076db9f16ab9dd50338470f4",
+        "version": "2a3ffaf9e9a42a3fd971b9d419e3205581fb1e561529759cdc386f0acc570468",
         "signature": "502a98affaa9eff869f0a258c3f0be5cf6a8f6653f84787da2668a3c3ccb4dc2",
         "affectsGlobalScope": false
       }

@@ -222,7 +222,7 @@
         "affectsGlobalScope": false
       },
       "../src/numtochinanumerals.ts": {
-        "version": "b32c149b51949b06de84722c68b5aac642adbed18c0aa974b6025f8ade97c3f2",
+        "version": "e594e1c83bffeedf4cb3249c99f486e03da8be150c5aebbcb60cfdb659125b29",
         "signature": "2b73f43db6b92b5545fee82db2e3b663de29fde18a66f0e6266062385e4c311e",
         "affectsGlobalScope": false
       }

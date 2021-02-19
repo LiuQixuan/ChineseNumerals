@@ -5,7 +5,7 @@
  * Created Date: 2021-02-18  10:11:52
  * Author: LiuQixuan(Atliuqixuan@hotmail.com)
  * -----
- * Last Modified:  2021-02-19  10:37:45
+ * Last Modified:  2021-02-20  5:04:39
  * Modified By: LiuQixuan
  * -----
  * Copyright 2020 - 2021 AIUSoft by LiuQixuan
@@ -13,15 +13,41 @@
  */
 import {numToChinanumerals} from "../lib/numToChinanumerals"
 
-let testdata1 = [ '2020020200', '1000200010', '202020000', '102310101010001200000020', '10100000000000000020', '12345678901234567890', '705485621320500230020', '10020202000', '10101010', '10', '0' ]
-let testdata2 = [ '102310101010001200000020', '10100000000000000020', '705485621320500230020', '10', '0' ]
+let testdata1 = ['2020020200', '2000202020', '202022222','202022202', '102210202020010200000020', '10100000000000000020', '10020202000', '10101010', '20', '2' ]
+let testdata2 = [ '102310101010001200000020', '10100000000000000020', '705485621320500230020']
+let testdata3 = ['123054650515600012','1210',10010,1010,101010101010]
+let testdata4 = ['202020000', '102310101010001200000020', '123543.123315','12354.123121','0.154','-.215','-123.','135.0000']
 
-for (let value of testdata2){
-  console.log("输入",value)
-  console.log("输出",numToChinanumerals(value,{format:'cn'}))
-  console.log("输出",numToChinanumerals(value,{format:'CN'}))
-}
+// for (let value of testdata1){
+//   console.log("输入",value)
+//   console.log("标准输出",numToChinanumerals(value,{format:'cn'}))
+//   console.log("口语化输出",numToChinanumerals(value,{format:'cn spoken'}))
+// }
 
+// for (let value of testdata4) {
+//   console.log("输入", value)
+//   console.log("标准输出", numToChinanumerals(value, { format: 'cn' }))
+//   console.log("金额输出", numToChinanumerals(value, { format: 'MONEY' }))
+// }
+
+// for (let value of testdata2) {
+//   console.log("输入", value)
+//   console.log("标准输出", numToChinanumerals(value, { format: 'cn' }))
+//   console.log("标准输出", numToChinanumerals(value, { format: 'cn', base:'gb'}))
+//   console.log("标准输出", numToChinanumerals(value, { format: 'cn', base:'tw' }))
+// }
+
+// console.log("正负值输出", numToChinanumerals(123456789))
+// console.log("正负值输出", numToChinanumerals(+123456789))
+// console.log("正负值输出", numToChinanumerals(-123456789))
+
+// for (let value of testdata4){
+//   console.log("输入",value)
+//   console.log("输出",numToChinanumerals(value,{format:'cn'}))
+//   console.log("输出",numToChinanumerals(value,{format:'CN'}))
+//   console.log("输出",numToChinanumerals(value,{format:'ARMY'}))
+//   console.log("输出",numToChinanumerals(value,{format:'MONEY'}))
+// }
 
 // console.log(numToChinanumerals(
 // console.log(numToChinanumerals('2020020200')) //test

@@ -5,7 +5,7 @@
  * Created Date: 2021-02-18  10:23:46
  * Author: LiuQixuan(Atliuqixuan@hotmail.com)
  * -----
- * Last Modified:  2021-02-19  10:59:58
+ * Last Modified:  2021-02-20  4:51:36
  * Modified By: LiuQixuan
  * -----
  * Copyright 2020 - 2021 AIUSoft by LiuQixuan
@@ -17,14 +17,34 @@ let cn: Array<string> = ['〇', '一', '二', '三', '四', '五', '六', '七',
 let CN: Array<string> = ['零', '壹', '貳', '叁', '肆', '伍', '陆', '柒', '捌', '玖', '拾', '佰', '仟', '萬', '億', '太', '京', '垓', '兆', '两']
 let army: Array<string> = ['洞', '幺', '两', '三', '四', '五', '六', '拐', '八', '钩']
 let ARMY: Array<string> = ['洞', '幺', '两', '叁', '肆', '伍', '陆', '拐', '捌', '钩']
-
+let decimalBase: Array<string> = ['納', '角', '分', '厘', '毫', '微', '纳', '皮']
 let arrOffset = nm.length - 2;
 
 interface config {
   'money': boolean,
-  'spoken': boolean
+  'spoken'?: boolean
 }
-
+function decimalToArray(value: string, money: boolean = false): Array<number> {
+  let result: Array<number> = []
+  if (money) {
+    value = value.slice(0, 3)
+    for (let i = 0; i < value.length; ++i) {
+      if (value[i] !== '0') {
+        result.push(parseInt(value[i]))
+        result.push((i + 1) * -1)
+      } else {
+        if (result.length === 0) {
+          result.push(0)
+        } else if (result[result.length - 1] !== 0) {
+          result.push(0)
+        }
+      }
+    }
+  } else {
+    result = Array.from(value).map((v: string): number => { return parseInt(v) })
+  }
+  return result
+}
 function numToArray(value: string, config: config = { money: false, spoken: false }): Array<number> {
   let r_arr: Array<number>
   for (let ii = 0; ii < value.length; ++ii) {
@@ -33,7 +53,7 @@ function numToArray(value: string, config: config = { money: false, spoken: fals
       break
     }
   }
-  r_arr = Array.from(value).reverse().map(function (v: string): number { return parseInt(v); })
+  r_arr = Array.from(value).reverse().map((v: string): number => { return parseInt(v); })
 
   var tmp: Array<Array<number>> = []
   while (r_arr.length > 4) {
@@ -49,14 +69,14 @@ function numToArray(value: string, config: config = { money: false, spoken: fals
     for (var j: number = 0; j < tmp[i].length; ++j) {
       let m = tmp[i].length - 1
       if (tmp[i][j] !== 0) {
-        if (config.spoken && tmp[i][j] === 2 && ((rank > 1 && tmp[i].length === 1 && j === 0) || (tmp[i].length === 3 && j === 0) || (tmp[i].length === 4 && (j === 0 || j === 1)) || (rank - i > 1 && j === 3 && tmp[i][1] === 0 && tmp[i][2] === 0))) {
+        if (config.spoken && tmp[i][j] === 2 && ((rank > 1 && tmp[i].length === 1 && j === 0) || (tmp[i].length === 3 && j === 0) || (tmp[i].length === 4 && (j === 0 || j === 1) || (rank - i > 1 && j === 3 && tmp[i][1] === 0 )))) {
           buff.push(arrOffset + 1)
         } else {
           buff.push(tmp[i][j])
         }
       }
       if (tmp[i][j] !== 0 && m - j != 0) {
-        if ((!config.money) && tmp[i][j] === 1 && m - j === 1 && (tmp[i].length === 2 && rank * 4 + 2 === value.toString().length)) {
+        if ((!config.money) && tmp[i][j] === 1 && m - j === 1 && ((tmp[i].length === 2 && rank * 4 + 2 === value.toString().length) /*|| (tmp[i].length === 4 && tmp[i][0] === 0 && tmp[i][1] === 0)*/)) {
           buff.pop()
         }
         buff.push(9 + m - j)
@@ -127,6 +147,8 @@ function numToChinanumerals(num: number | string | bigint = 0, option: option = 
   let res2: Array<number> = []
   let arr: Array<string> = cn
   let sign = 0
+  let decimalFlag: boolean = false
+  let decimal: string = ''
   option = Object.assign({ format: 'normal', base: 'normal' }, option)
 
   if (typeof num === "number" || typeof num === "bigint") {
@@ -140,18 +162,29 @@ function numToChinanumerals(num: number | string | bigint = 0, option: option = 
     sign = /^-$/.test(value[0]) ? -1 : 1
     value = value.slice(1)
   }
+  if (/\.+/g.test(value)) {
+    decimalFlag = true
+    decimal = value.slice(value.search(/\.+/g) + 1).replace(/\.+/g, '')
+    value = value.slice(0, value.search(/\.+/g))
+  }
 
   if (/normal/i.test(option.format)) {
     arr = nm
-    str = sign === 1 ? '正' : sign === -1 ? '负' : ''
+    if (!(value.length === 0 &&/^0+$/.test(decimal))) {
+      str = sign === 1 ? '正' : sign === -1 ? '负' : ''
+    }
   }
   else if (/cn/.test(option.format)) {
     arr = cn
-    str = sign === 1 ? '正' : sign === -1 ? '负' : ''
+    if (!(value.length === 0 &&/^0+$/.test(decimal))) {
+      str = sign === 1 ? '正' : sign === -1 ? '负' : ''
+    }
   }
   else if (/CN/.test(option.format)) {
     arr = CN
-    str = sign === 1 ? '正' : sign === -1 ? '負' : ''
+    if (!(value.length === 0 &&/^0+$/.test(decimal))) {
+      str = sign === 1 ? '正' : sign === -1 ? '負' : ''
+    }
   }
   else if (/army/.test(option.format)) {
     arr = army
@@ -162,21 +195,25 @@ function numToChinanumerals(num: number | string | bigint = 0, option: option = 
   else if (/money/.test(option.format)) {
     arr = cn
     arr.push('元')
-    arr.push('整')
-    str = sign === 1 ? '正' : sign === -1 ? '负' : ''
+    arr.push('正')
+    if (!(value.length === 0 &&/^0+$/.test(decimal))) {
+      str = sign === 1 ? '正' : sign === -1 ? '负' : ''
+    }
   }
   else if (/MONEY/.test(option.format)) {
     arr = CN
-    arr.push('圆')
+    arr.push('元')
     arr.push('整')
-    str = sign === 1 ? '正' : sign === -1 ? '負' : ''
+    if (!(value.length === 0 &&/^0+$/.test(decimal))) {
+      str = sign === 1 ? '正' : sign === -1 ? '負' : ''
+    }
   }
   else {
     throw new SyntaxError("[Error] failed to parse format argument");
   }
 
-  if (value.length === 0 || (value.length === 1 && value[0] === '0')) {
-    str = arr[0]
+  if (/^0*$/.test(value)) {
+    str += arr[0]
   } else if (/(?:(?:army)|(?:ARMY))/.test(option.format)) {
     for (let item of value) {
       str += arr[parseInt(item)]
@@ -267,10 +304,23 @@ function numToChinanumerals(num: number | string | bigint = 0, option: option = 
       str += arr[v]
     }
 
-    if (/money/i.test(option.format)) {
-      str += arr[arr.length - 2]
-      if (res[res.length - 1] > 9) {
-        str += arr[arr.length - 1]
+  }
+  if (/money/i.test(option.format)) {
+    str += arr[arr.length - 2]
+    if (!decimalFlag || /^0*$/.test(decimal)) {
+      str += arr[arr.length - 1]
+    } else{
+      let deci:Array<number> = decimalToArray(decimal,true)
+      for (let i of deci){
+        str += i<0?decimalBase[i*-1]:arr[i]
+      }
+    }
+  }else{
+    if (decimalFlag &&!/^0*$/.test(decimal)) {
+      str += /CN/.test(option.format) ?'點':'点'
+      let deci: Array<number> = decimalToArray(decimal)
+      for (let i of deci) {
+        str += arr[i]
       }
     }
   }
