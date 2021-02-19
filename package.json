@@ -1,0 +1,37 @@
+{
+  "name": "chinesenumpro",
+  "version": "1.0.0",
+  "description": "npm package to convert between Chinese numbers and Arabic numbers.",
+  "main": "index.js",
+  "scripts": {
+    "test1": "tsc -p ./test/tsconfig.json&&node ./test/testTochineseNumerals.js",
+    "run-test1": "node ./test/testTochineseNumerals.js",
+    "build-lib": "tsc -p ./src/tsconfig.json",
+    "build-test": "tsc -p ./test/tsconfig.json",
+    "build-index": "tsc -p ./tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LiuQixuan/ChineseNumerals.git"
+  },
+  "keywords": [
+    "chinese",
+    "number",
+    "numerals",
+    "money",
+    "convert"
+  ],
+  "author": "LiuQixuan@Aiusoft",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LiuQixuan/ChineseNumerals/issues"
+  },
+  "homepage": "https://github.com/LiuQixuan/ChineseNumerals#readme",
+  "dependencies": {
+    
+  },
+  "devDependencies": {
+    "typescript": "^4.1.5",
+    "mocha": "^8.3.0"
+  }
+}

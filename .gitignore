@@ -1,0 +1,12 @@
+# dependencies
+node_modules/
+
+# vscode setting
+/.vscode/
+
+# misc
+.DS_Store
+
+# build launch
+*.ps1
+
