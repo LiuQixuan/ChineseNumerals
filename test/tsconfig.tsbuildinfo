@@ -216,9 +216,14 @@
         "signature": "1e61418f41d404e744b6536af9f8c6f6674dd4d54c12335cd0c4f7eded69cf3f",
         "affectsGlobalScope": true
       },
+      "../lib/chinanumeralstonum.d.ts": {
+        "version": "e5bde6f03f273260fa852e3ae71226830bfd10f3190438775ba6e6d2eb59480e",
+        "signature": "e5bde6f03f273260fa852e3ae71226830bfd10f3190438775ba6e6d2eb59480e",
+        "affectsGlobalScope": false
+      },
       "./testtonum.ts": {
-        "version": "b99db3b73c0e06c609d726c05d233e81585f1bceaaf2514b4cfc7526a06c5e0e",
-        "signature": "a5090866b554fff9b41f25813a12e2aad372ea8e1ab8aac70acde6af4afd7432",
+        "version": "a6c2105636d909b1e601cc3e8ee967c4a87a39125c5328d63d1cb5baf1d85fc7",
+        "signature": "0162f84c91dd77ba1049381fb12286ffd9ab4c61357b2af3e6651ad6bfeb48d4",
         "affectsGlobalScope": false
       },
       "../lib/numtochinanumerals.d.ts": {
@@ -227,7 +232,7 @@
         "affectsGlobalScope": false
       },
       "./testtochinesenumerals.ts": {
-        "version": "2a3ffaf9e9a42a3fd971b9d419e3205581fb1e561529759cdc386f0acc570468",
+        "version": "fa4abfea4c981427c93068478fa82fc545dc50af1c37d4104c96076406f38087",
         "signature": "502a98affaa9eff869f0a258c3f0be5cf6a8f6653f84787da2668a3c3ccb4dc2",
         "affectsGlobalScope": false
       }
@@ -258,10 +263,14 @@
     "referencedMap": {
       "./testtochinesenumerals.ts": [
         "../lib/numtochinanumerals.d.ts"
+      ],
+      "./testtonum.ts": [
+        "../lib/chinanumeralstonum.d.ts"
       ]
     },
     "exportedModulesMap": {},
     "semanticDiagnosticsPerFile": [
+      "../lib/chinanumeralstonum.d.ts",
       "../lib/numtochinanumerals.d.ts",
       "../node_modules/typescript/lib/lib.dom.d.ts",
       "../node_modules/typescript/lib/lib.es2015.collection.d.ts",

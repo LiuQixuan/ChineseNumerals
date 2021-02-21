@@ -5,7 +5,7 @@
  * Created Date: 2021-02-18  10:23:46
  * Author: LiuQixuan(Atliuqixuan@hotmail.com)
  * -----
- * Last Modified:  2021-02-20  4:51:36
+ * Last Modified:  2021-02-21  8:03:25
  * Modified By: LiuQixuan
  * -----
  * Copyright 2020 - 2021 AIUSoft by LiuQixuan
@@ -18,6 +18,12 @@ let CN: Array<string> = ['零', '壹', '貳', '叁', '肆', '伍', '陆', '柒',
 let army: Array<string> = ['洞', '幺', '两', '三', '四', '五', '六', '拐', '八', '钩']
 let ARMY: Array<string> = ['洞', '幺', '两', '叁', '肆', '伍', '陆', '拐', '捌', '钩']
 let decimalBase: Array<string> = ['納', '角', '分', '厘', '毫', '微', '纳', '皮']
+let WK: Array<string> = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+let wk: Array<string> = ['日', '一', '二', '三', '四', '五', '六']
+let hs: Array<string> = ['癸', '甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬']             //天干(Heavenly Stems)
+let eb: Array<string> = ['亥', '子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌']  //地支(Earthly Branches)
+
+
 let arrOffset = nm.length - 2;
 
 interface config {
@@ -132,7 +138,7 @@ function numToArray(value: string, config: config = { money: false, spoken: fals
 }
 
 interface option {
-  //format:['normal'|'cn'|'CN'|'army'|'ARMY'|'money'|'MONEY']
+  //format:['normal'|'cn'|'CN'|'army'|'ARMY'|'money'|'MONEY'|'wk'|'WK'|'hs'|'eb']
   format: string,
   //base:['normal'|'gb'|'tw']
   base?: string
@@ -186,12 +192,6 @@ function numToChinanumerals(num: number | string | bigint = 0, option: option = 
       str = sign === 1 ? '正' : sign === -1 ? '負' : ''
     }
   }
-  else if (/army/.test(option.format)) {
-    arr = army
-  }
-  else if (/ARMY/.test(option.format)) {
-    arr = ARMY
-  }
   else if (/money/.test(option.format)) {
     arr = cn
     arr.push('元')
@@ -207,6 +207,21 @@ function numToChinanumerals(num: number | string | bigint = 0, option: option = 
     if (!(value.length === 0 &&/^0+$/.test(decimal))) {
       str = sign === 1 ? '正' : sign === -1 ? '負' : ''
     }
+  } else if (/wk/.test(option.format)) {
+    arr = wk
+  } else if (/WK/.test(option.format)) {
+    arr = WK
+  } else if (/eb/i.test(option.format)) {
+    arr = eb
+  } else if (/hs/i.test(option.format)) {
+    arr = hs
+  } else if (/day/i.test(option.format)) {
+    arr = cn
+  } else if (/army/.test(option.format)) {
+    arr = army
+  }
+  else if (/ARMY/.test(option.format)) {
+    arr = ARMY
   }
   else {
     throw new SyntaxError("[Error] failed to parse format argument");
@@ -214,10 +229,40 @@ function numToChinanumerals(num: number | string | bigint = 0, option: option = 
 
   if (/^0*$/.test(value)) {
     str += arr[0]
+    if (/(?:wk)|(?:eb)|(?:hs)|(?:day)/i.test(option.format)){
+      decimalFlag = false
+    }
   } else if (/(?:(?:army)|(?:ARMY))/.test(option.format)) {
     for (let item of value) {
       str += arr[parseInt(item)]
     }
+  } else if (/(?:wk)|(?:eb)|(?:hs)/i.test(option.format)) {
+    str = arr[parseInt(value)%(arr.length)]
+    decimalFlag = false
+  } else if (/day/i.test(option.format)) {
+    value = parseInt(value) > 31 ? String(parseInt(value)%31):value
+    if(value.length === 1){
+      str = '初'+arr[parseInt(value)]
+    }else if  (value[0]=='1'){
+      if (value[1] === '0') {
+        str = '初十'
+      }else{
+        str = '十' + arr[parseInt(value[1])]
+      }
+    } else if (value[0] == '2') {
+      if(value[1]==='0'){
+        str = '廿十'
+      }else{
+        str = '廿' + arr[parseInt(value[1])]
+      }
+    } else if (value[0] == '3') {
+      if (value[1] === '0') {
+        str = '三十'
+      } else {
+        str = '三十' + arr[parseInt(value[1])]
+      }
+    }
+    decimalFlag = false
   } else {
     if (value.length > 12) {
       value2 = value.slice(0, -12)
@@ -307,13 +352,13 @@ function numToChinanumerals(num: number | string | bigint = 0, option: option = 
   }
   if (/money/i.test(option.format)) {
     str += arr[arr.length - 2]
-    if (!decimalFlag || /^0*$/.test(decimal)) {
-      str += arr[arr.length - 1]
-    } else{
+    if (decimalFlag && !/^0*$/.test(decimal)) {
       let deci:Array<number> = decimalToArray(decimal,true)
       for (let i of deci){
         str += i<0?decimalBase[i*-1]:arr[i]
       }
+    } else{
+      str += arr[arr.length - 1]
     }
   }else{
     if (decimalFlag &&!/^0*$/.test(decimal)) {

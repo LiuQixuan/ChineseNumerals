@@ -1,12 +1,14 @@
 {
   "name": "chinesenum",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "npm package to convert between Chinese numbers and Arabic numbers.",
   "main": "index.js",
   "scripts": {
-    "test1": "tsc -p ./test/tsconfig.json&&node ./test/testTochineseNumerals.js",
+    "test1": "tsc -p ./test/tsconfig.json&&npm run run-test1",
+    "test2": "tsc -p ./test/tsconfig.json&&npm run run-test2",
     "run-test1": "node ./test/testTochineseNumerals.js",
-    "rebuild":"tsc -p ./src/tsconfig.json&&tsc -p ./test/tsconfig.json&&node ./test/testTochineseNumerals.js",
+    "run-test2": "node ./test/testToNum.js",
+    "rebuild":"npm run build-lib&&npm run build-test&&npm run run-test2",
     "build-lib": "tsc -p ./src/tsconfig.json",
     "build-test": "tsc -p ./test/tsconfig.json",
     "build-index": "tsc -p ./tsconfig.json"

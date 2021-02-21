@@ -4,37 +4,45 @@
 > chinesenum用于中文数字表示法与阿拉伯数字表示法的转换.核心部分,使用数组表示有效数字和数量单位,突破了其他npm包使用number类型算数取模的粗暴方法带来的位数限制(最多支持16位),同时采用了更优化算法,不需要算数取模,算数整除等算术运算,速度更快bug更少.<br>此npm包广泛支持各种中文数字表示方法,提供配置参数可供用户精准定制转换后的结果.在处理用户输入数据的时候使用正则表达式过滤非法输入符号,增强了程序的鲁棒性.
 ## 此npm包支持中文表示法:
 > 支持正负号<br>
-> 简体中文数字<br>
-> 繁体中文数字<br>
-> 金融人民币金额大写简(繁)中文数字<br>
-> 口语简(繁)中文数字<br>
-> 中国军用数字表示<br>
-> 国标数字单位格式化<br>
-> 日韩台等地区数字单位格式化<br>
-> 普通常规数字单位格式化<br>
+> 简体中文数字(cn)<br>
+> 繁体中文数字(CN)<br>
+> 金融人民币金额大写简(繁)中文数字(money/MONEY)<br>
+> 口语简(繁)中文数字(cn spoken/CN spoken)<br>
+> 中国军用数字表示(army/ARMY)<br>
+> 国标数字单位格式化(base:gb)<br>
+> 日韩台等地区数字单位格式化(base:tw)<br>
+> 普通常规数字单位格式化(base:normal)<br>
+> 天干地支(hs/eb. 天干 Heavenly Stems,地支 Earthly Branches)<br>
+> 支持农历日期(day)
+> 中文表示法转阿拉伯数字
 
 ## 用法
 ``` javascript
+//commonjs
+var chinesenum = require("chinesenum")
+chinesenum.numToChinanumerals(num:number | string | bigint = 0,option:object)
+chinesenum.chinanumeralsToNum(num:string = "壹佰叁拾伍元貳角壹分伍厘",option:object)
+//ES6 module
 import {numToChinanumerals,chinanumeralsToNum} from chinesenum
 numToChinanumerals(num:number | string | bigint = 0,option:object)
-chinanumeralsToNum(num:string = "",option:object)
+chinanumeralsToNum(num:string = "壹佰叁拾伍元貳角壹分伍厘",option:object)
 ```
-
-## 参数说明
+## **numToChinanumerals**(num:number | string | bigint = 0,option:object)
+### 参数说明
 **num**
 - num:string 可选,默认为0
 - num:[number | string | bigint]
   
 
 **option**
-- option :object *可选,默认为`{format:normal,base:normal}`*
+- option :object *可选,默认为`{format:'normal',base:'normal'}`*
 ```typescript
 interface option{
   format:string,
   base?:string
 }
 ```
-- format = ['normal'|'cn'|'CN'|'army'|'ARMY'|'money'|'MONEY'|spoken]
+- format = ['normal'|'cn'|'CN'|'army'|'ARMY'|'money'|'MONEY'|'wk'|'WK'|'hs'|'eb']
 - base = ['normal'|'gb'|'tw'] *可选,默认为`base:normal`*
 
 ## 测试
@@ -55,7 +63,39 @@ numToChinanumerals('-123456789')
 输入 -123456789
 正负值输出 负一亿二千三百四十五万六千七百八十九
 ```
+数字转军用数字
 
+eg:
+```javascript
+numToChinanumerals(123543.123315,{format:'ARMY'})
+numToChinanumerals(123543.123315,{format:'army'})
+```
+```json
+输入 202020000
+输出 两洞两洞两洞洞洞洞
+输出 两洞两洞两洞洞洞洞
+输入 102310101010001200000020
+输出 幺洞两叁幺洞幺洞幺洞幺洞洞洞幺两洞洞洞洞洞洞两洞
+输出 幺洞两三幺洞幺洞幺洞幺洞洞洞幺两洞洞洞洞洞洞两洞
+输入 123543.123315
+输出 幺两叁伍肆叁点幺两叁叁幺伍
+输出 幺两三五四三点幺两三三幺五
+输入 12354.123121
+输出 幺两叁伍肆点幺两叁幺两幺
+输出 幺两三五四点幺两三幺两幺
+输入 0.154
+输出 洞点幺伍肆
+输出 洞点幺五四
+输入 -.215
+输出 洞点两幺伍
+输出 洞点两幺五
+输入 -123.
+输出 幺两叁
+输出 幺两三
+输入 135.0000
+输出 幺叁伍
+输出 幺三五
+```
 
 常规测试(满足日常需求)
 
@@ -238,7 +278,7 @@ numToChinanumerals('123543.123315',{format:'cn'})
 输出 幺伍肆点两伍
 输出 負壹佰伍拾肆元貳角伍分
 输入 -.215
-输出 〇点二一五
+输出 负〇点二一五
 输出 零點貳壹伍
 输出 洞点两幺伍
 输出 零元貳角壹分伍厘
@@ -259,6 +299,111 @@ numToChinanumerals('123543.123315',{format:'cn'})
 输出 壹佰叁拾伍元整
 ```
 
+中文星期天干地支输出
+
+eg:
+```javascript
+numToChinanumerals(5,{format:'WK'})
+numToChinanumerals(5,{format:'wk'})
+numToChinanumerals(7,{format:'hs'})   //天干(Heavenly Stems)
+numToChinanumerals(11,{format:'eb'})  //地支(Earthly Branches)
+```
+```json
+输入 2
+周输出 周二
+星期输出 二
+天干输出 乙
+地支输出 丑
+输入 10
+周输出 周三
+星期输出 三
+天干输出 癸
+地支输出 酉
+输入 12
+周输出 周五
+星期输出 五
+天干输出 乙
+地支输出 亥
+输入 26
+周输出 周五
+星期输出 五
+天干输出 己
+地支输出 丑
+输入 -12.2
+周输出 周五
+星期输出 五
+天干输出 乙
+地支输出 亥
+输入 0
+周输出 周日
+星期输出 日
+天干输出 癸
+地支输出 亥
+输入 -.23
+周输出 周日
+星期输出 日
+天干输出 癸
+地支输出 亥
+输入
+周输出 周日
+星期输出 日
+天干输出 癸
+地支输出 亥
+
+```
+
+中文农历日期输出
+
+eg:
+```javascript
+numToChinanumerals(5,{format:'day'})
+numToChinanumerals(15,{format:'day'})
+numToChinanumerals(20,{format:'day'})
+numToChinanumerals(21,{format:'day'})
+numToChinanumerals(30,{format:'day'})
+```
+```json
+输入 8
+农历日期输出 初八
+输入 10
+农历日期输出 初十
+输入 11
+农历日期输出 十一
+输入 19
+农历日期输出 十九
+输入 20
+农历日期输出 廿十
+输入 26
+农历日期输出 廿六
+输入 30
+农历日期输出 三十
+输入 31
+农历日期输出 三十一
+输入 32
+农历日期输出 初一
+输入 33
+```
+
+鲁棒性测试
+
+eg:
+```JavaScript
+let arr = ['/0-.123','0s000-1s--32w1','2 a3.2.3-5646','00a.-456ds54 1564','a00-.123']
+arr.forEach((v)=>{console.log(numToChinanumerals(v))})
+```
+```json
+输入: /0-.123
+输出: 负零点一二三
+输入: 0s000-1s--32w1
+输出: 负一千三百二十一
+输入: 2 a3.2.3-5646
+输出: 二十三点二三五六四六
+输入: 00a.-456ds54 1564
+输出: 零点四五六五四一五六四
+输入: a00-.123      
+输出: 负零点一二三
+```
+
 同类型对比测试
 
 eg:
@@ -267,6 +412,12 @@ numToChinese(10101010001200000000)
 numToChinanumerals(10101010001200000000)
 ```
 ```json
+输入: 00a.-456ds54 1564
+某功能类似的库输出: 抛出异常程序崩溃
+我重新编写的库输出: 零点四五六五四一五六四
+输入: 1000200010
+某功能类似的库输出: 一十亿零二十万零一十
+我重新编写的库输出: 十亿零二十万零一十
 输入: 1000200010
 某功能类似的库输出: 一十亿零二十万零一十
 我重新编写的库输出: 十亿零二十万零一十
@@ -297,12 +448,79 @@ numToChinanumerals(10101010001200000000)
 ```
 
 
+## **chinanumeralsToNum**(str:string = '', option:object = {format:'cn'})
+### 参数说明
+**str**
+- str:string 可选,默认为0
+
+**option**
+- option :object *必选,默认为`{format:'cn'}`*
+```typescript
+interface option{
+  format:string,
+}
+```
+- format = [''cn'|'CN'|'army'|'ARMY']
+
+## 测试
+
+军用数字输出
+
+eg:
+```JavaScript
+chinanumeralsToNum('幺两叁伍肆叁点幺两叁叁幺伍', { format: 'army' })
+```
+```json
+输入 幺洞两三幺洞幺洞幺洞幺洞洞洞幺两洞洞洞洞洞洞两洞
+输出 102310101010001200000020
+输入 幺两叁伍肆叁点幺两叁叁幺伍
+输出 123543.123315
+```
+一般中文数字输出
+
+eg:
+```JavaScript
+chinanumeralsToNum('二千六百五十垓〇一百六十五京四千一百兆〇二百二十五亿四千五百二十万〇一百五十二', { format: 'cn' })
+```
+```json
+输入 二千六百五十垓〇一百六十五京四千一百兆〇二百二十五亿四千五百二十万〇一百五十二
+输出 265001654100022545200152
+输入 一百〇四万亿亿五千亿亿一千八百三十三万亿〇一百三十五亿四千六百〇四万八千五百
+输出 10450001833013546048500
+输入 七垓〇五百四十八京五千六百二十一太三千二百〇五亿〇二十三万〇二十
+输出 705485621320500230020
+```
+
+含有小数位的数字输出
+
+eg:
+```JavaScript
+chinanumeralsToNum('十二万三千五百四十三点一二三三一五', { format: 'cn' })
+```
+```json
+输入 十二万三千五百四十三点一二三三一五
+输出 123543.123315
+输入 拾貳萬叁仟伍佰肆拾叁點壹貳叁叁壹伍
+输出 123543.123315
+输入 零元貳角壹分伍厘
+输出 0.215
+输入 壹佰叁拾伍元整
+输出 135
+输入 零元零角零分零厘
+输出 0
+输入 零元零角壹分零厘
+输出 0.01
+```
+
+
 ## 注意
 1. option 的format字段严格遵循大小写,如果需要简体就用小写,需要繁体就用大写例如{format:'MONEY'}/{format:'army'},千万不能写成Money/aRmY一定会报错.当然缺省属性normal和口语化附加属性spoken除外,只要是spoken这个单词就行不在乎字母大小写.
 2. format:'normal'或缺省format字段时其为默认输出样式,输出结果与format:'cn'输出结果类似,只是format:'cn'输出结果用'〇'表示,不太自然,除非你需要用'〇'表示0,此时使用format:'cn'即可.
 3. spoken 表示口语化输出, 本质差别为口语中部分量词'2'读作'两'而不说'二',例如:'我的车买的时候花了二十万.我的MacbookPro原价两万多.在场两千多人.我兜里只剩二百块千'等等此时虽然都是数字'2'但却有不同的读法,算是中文口语特色了.spoken属性为附加属性,一般不单独使用.使用时需要与'normal','cn','CN'一起出现组成format:'normal spoken',format:'cn spoken',format:'CN spoken',原理上可以与money或MONEY同时使用format:'money spoken',用于收款播报读音.但是,一般需要转换成人民币金额的情况直接使用format:'money'或format:'MONEY'即可.
 4. 理论上使用数组表示数字可以无限长度,但是根据实际情况和现实世界可观测数量级这里设置上限24位数字,数字再长程序写着费劲,也没有意义毕竟目前已观测星星也仅有一千亿多颗,全球美元总量也仅有13万亿多元.相对24位10进制数来讲可真是个大数了.
 5. v1.0.1添加了对小数的支持,其中用于表示人民币金额的金融数字输出规则为小数点后保留3位,并按照角/分/厘的数量单位进行划分.其他格式化方法按照数字简单中文转换进行,但是如果小数位为0,称为假小数则按照整数处理.
+6. v1.0.2添加了输入中文数字输出阿拉伯数字的方法.此方法只保证转换此包生成的中文数字,不保证其他可能不合法的中文数字的正常转换.
+7. v1.0.2添加对天干地支的支持.虽然用途有限,但不能没有.
 
 ## 优势
 
@@ -313,5 +531,6 @@ numToChinanumerals(10101010001200000000)
 ## 历史版本
 -  ✅v1.0.0 发布chinesenum包,实现基本功能
 -  ✅v1.0.1 添加对小数的支持,实现一般小数转换和金额角分厘的转换
--  🟩v1.0.2 实现将中文数字转换成阿拉伯数字,修复潜在BUG
+-  ✅v1.0.2 实现将中文数字转换成阿拉伯数字,添加对天干地支的支持,添加对中文星期的支持,添加中国农历日期支持
+-  🟩v1.0.X 添加更多支持,优化算法,修复潜在BUG
 -  ...

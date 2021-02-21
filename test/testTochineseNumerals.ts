@@ -5,7 +5,7 @@
  * Created Date: 2021-02-18  10:11:52
  * Author: LiuQixuan(Atliuqixuan@hotmail.com)
  * -----
- * Last Modified:  2021-02-20  5:04:39
+ * Last Modified:  2021-02-21  8:11:00
  * Modified By: LiuQixuan
  * -----
  * Copyright 2020 - 2021 AIUSoft by LiuQixuan
@@ -14,9 +14,23 @@
 import {numToChinanumerals} from "../lib/numToChinanumerals"
 
 let testdata1 = ['2020020200', '2000202020', '202022222','202022202', '102210202020010200000020', '10100000000000000020', '10020202000', '10101010', '20', '2' ]
-let testdata2 = [ '102310101010001200000020', '10100000000000000020', '705485621320500230020']
+let testdata2 = [ '102310101010001200000020', '10100000000000000020', '705485621320500230020','10450001833013546048500','265001654100022545200152']
 let testdata3 = ['123054650515600012','1210',10010,1010,101010101010]
 let testdata4 = ['202020000', '102310101010001200000020', '123543.123315','12354.123121','0.154','-.215','-123.','135.0000']
+let testdata5 = ['2','5','10','11','12','26','-12.2','0','-.23','']
+
+// for(let i = 1;i<40;++i){
+//   console.log("输入", i)
+//   console.log("农历日期输出",numToChinanumerals(i,{format:'day'}))
+// }
+
+// for (let value of testdata5){
+//   console.log("输入",value)
+//   console.log("周输出",numToChinanumerals(value,{format:'WK'}))
+//   console.log("星期输出",numToChinanumerals(value,{format:'wk'}))
+//   console.log("天干输出",numToChinanumerals(value,{format:'hs'}))
+//   console.log("地支输出",numToChinanumerals(value,{format:'eb'}))
+// }
 
 // for (let value of testdata1){
 //   console.log("输入",value)
@@ -43,10 +57,10 @@ let testdata4 = ['202020000', '102310101010001200000020', '123543.123315','12354
 
 // for (let value of testdata4){
 //   console.log("输入",value)
-//   console.log("输出",numToChinanumerals(value,{format:'cn'}))
-//   console.log("输出",numToChinanumerals(value,{format:'CN'}))
+//   // console.log("输出",numToChinanumerals(value,{format:'cn'}))
+//   // console.log("输出",numToChinanumerals(value,{format:'CN'}))
 //   console.log("输出",numToChinanumerals(value,{format:'ARMY'}))
-//   console.log("输出",numToChinanumerals(value,{format:'MONEY'}))
+//   console.log("输出",numToChinanumerals(value,{format:'army'}))
 // }
 
 // console.log(numToChinanumerals(

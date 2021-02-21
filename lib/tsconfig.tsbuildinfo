@@ -217,12 +217,12 @@
         "affectsGlobalScope": true
       },
       "../src/chinanumeralstonum.ts": {
-        "version": "60359919a9c1a65d805a05a17b4a6a3f176121f3b773640f4cb5b467fe93311d",
-        "signature": "421c95a3b7a48f914a9babd4808a43a7d975e507e15cbf766b07a41aa06fda7a",
+        "version": "96418dd498f3c63444aff334f3126ecf76f115013660b79e1f5527ee20824344",
+        "signature": "e5bde6f03f273260fa852e3ae71226830bfd10f3190438775ba6e6d2eb59480e",
         "affectsGlobalScope": false
       },
       "../src/numtochinanumerals.ts": {
-        "version": "e594e1c83bffeedf4cb3249c99f486e03da8be150c5aebbcb60cfdb659125b29",
+        "version": "9810f2b8276e14399a8f3934ecccb129f6789e4e420a219961a514f49effb022",
         "signature": "2b73f43db6b92b5545fee82db2e3b663de29fde18a66f0e6266062385e4c311e",
         "affectsGlobalScope": false
       }
